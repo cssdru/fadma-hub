@@ -30,7 +30,7 @@ export default defineConfig({
         '@pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
         '@public': fileURLToPath(new URL('./public', import.meta.url)),
         '@post-images': fileURLToPath(new URL('./public/posts', import.meta.url)),
-        '@project-images': fileURLToPath(new URL('./public/projects', import.meta.url)),
+        '@article-images': fileURLToPath(new URL('./public/articles', import.meta.url)),
       },
     },
   },

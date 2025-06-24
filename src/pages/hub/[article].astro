@@ -1,0 +1,75 @@
+---
+import DefaultLayout from '@layouts/DefaultLayout.astro'
+import PageHeader from '@components/PageHeader.astro'
+import SocialShares from '@components/SocialShares.astro'
+import { getCollection, render } from 'astro:content'
+import type { CollectionEntry } from 'astro:content'
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles')
+
+  const articleImages = [
+    { src: '/articles/article-image-1.png' },
+    { src: '/articles/article-image-2.png' },
+    { src: '/articles/article-image-3.png' },
+    { src: '/articles/article-image-4.png' },
+    { src: '/articles/article-image-5.png' },
+    { src: '/articles/article-image-6.png' },
+    { src: '/articles/fadma-article-izran.jpg' },
+  ]
+
+  return articles.map((article, index) => {
+    const articleWithImage = {
+      ...article,
+      featuredImage: articleImages[index % articleImages.length].src,
+    }
+
+    return {
+      params: { article: article.id },
+      props: { article: articleWithImage },
+    }
+  })
+}
+
+interface Props {
+  article: CollectionEntry<'articles'> & { featuredImage: string }
+}
+
+const { article } = Astro.props
+const { Content } = await render(article)
+
+const author = {
+  name: article.data.author,
+  image: '/articles/article-image-1.png',
+  bio: 'Article Creator',
+}
+---
+
+<DefaultLayout title={article.data.title} description={article.data.description} url={article.data.title}>
+  <PageHeader
+    title={article.data.title}
+    subtitle={article.data.description}
+    author={author}
+    bgType="bordered"
+    featuredImage={article.featuredImage}
+  />
+  <section class="my-12">
+    <div class="narrow space-content container">
+      <Content />
+    </div>
+  </section>
+  <section class="my-12">
+    <div class="narrow space-content container">
+      <h2>Share this article</h2>
+      <p>Like this article? Share it with your network!</p>
+      <SocialShares />
+    </div>
+  </section>
+</DefaultLayout>
+
+<style lang="scss" is:global>
+  .narrow {
+    margin-inline: auto;
+    max-width: 65ch;
+  }
+</style>

@@ -1,0 +1,100 @@
+---
+import DefaultLayout from '@layouts/DefaultLayout.astro'
+import PageHeader from '@components/PageHeader.astro'
+import { Card, Pagination } from 'accessible-astro-components'
+import { getCollection } from 'astro:content'
+import type { GetStaticPaths, Page } from 'astro'
+import type { CollectionEntry } from 'astro:content'
+
+// Import images directly for optimization
+import articleImage1 from '@assets/images/articles/article-image-1.png'
+import articleImage2 from '@assets/images/articles/article-image-2.png'
+import articleImage3 from '@assets/images/articles/article-image-3.png'
+import articleImage4 from '@assets/images/articles/article-image-4.png'
+import articleImage5 from '@assets/images/articles/article-image-5.png'
+import articleImage6 from '@assets/images/articles/article-image-6.png'
+import articleImage7 from '@assets/images/articles/fadma-article-izran.jpg'
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const articles = await getCollection('articles')
+
+  const articleImages = [articleImage1, articleImage2, articleImage3, articleImage4, articleImage5, articleImage6, articleImage7]
+
+  const articlesWithImages = articles.map((article, index) => {
+    return {
+      ...article,
+      featuredImage: articleImages[index % articleImages.length],
+    }
+  })
+
+  return paginate(articlesWithImages, { pageSize: 6 })
+}) satisfies GetStaticPaths
+
+interface Props {
+  page: Page<CollectionEntry<'articles'> & { featuredImage: any }>
+}
+
+const { page } = Astro.props
+
+// Prepare pagination props
+const currentPage = page.currentPage
+const totalPages = Math.ceil(page.total / page.size)
+---
+
+<DefaultLayout
+  title="Hub"
+  description="Plongez au cœur vibrant de la culture Amazighe Rifaine. Explorez une collection d'articles fascinants qui dévoilent les traditions ancestrales, l'art captivant, l'histoire résiliente et le savoir-faire unique du peuple du Rif. Une immersion authentique dans un patrimoine vivant."
+>
+  <PageHeader
+    title="Hub Culture"
+    subtitle='Plongez au cœur vibrant de la culture Amazighe Rifaine. Explorez les traditions ancestrales, la culture et le savoir-faire unique du peuple du Rif. Une immersion authentique dans un patrimoine vivant.'
+    bgType="bordered"
+  />
+  <section class="my-12">
+    <div class="container">
+      <p class="text-sm"><em>Article {page.start + 1} through {page.end + 1} of {page.total} total articles</em></p>
+      <ul class="my-3 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          page.data.map((article) => (
+            <li>
+              <Card
+                imageComponent={article.featuredImage}
+                url={'/hub/' + article.id}
+                title={article.data.title}
+                footer={'Author: ' + article.data.author}
+              >
+                {article.data.description}
+              </Card>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-12 grid place-content-center">
+        <Pagination
+          firstPage={page.url.prev ? '/hub' : null}
+          previousPage={page.url.prev ? page.url.prev : null}
+          nextPage={page.url.next ? page.url.next : null}
+          lastPage={page.url.next ? `/hub/${Math.ceil(page.total / page.size)}` : null}
+          currentPage={`${page.currentPage}`}
+          totalPages={`${Math.ceil(page.total / page.size)}`}
+          ariaLabel="Hub pagination"
+        />
+      </div>
+    </div>
+  </section>
+</DefaultLayout>
+
+<style lang="scss" is:global>
+  @use '../../assets/scss/base/mixins' as *;
+
+  .card {
+    h3 {
+      margin-block-end: var(--space-xs);
+      line-height: 0.75;
+    }
+
+    a {
+      @include text-decoration(transparent, var(--foreground-color), 4px, 2px);
+    }
+  }
+</style>

@@ -1,6 +1,6 @@
 {
   "name": "accessible-astro-starter",
-  "description": "An Accessible Starter Theme for Astro including several accessibility features and tools to help you build faster.",
+  "description": "Explorez la richesse authentique de la culture Amazighe du Rif. Plongez dans l'histoire, la cuisine, les proverbes, l'art et la sagesse Amazighe Rifaine.",
   "version": "4.1.0",
   "author": "Incluud",
   "license": "MIT",
@@ -24,7 +24,7 @@
     "ui-library",
     "ui-components",
     "blog",
-    "portfolio"
+    "articleS"
   ],
   "repository": {
     "type": "git",
@@ -39,9 +39,10 @@
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.27.0",
     "@iconify-json/lucide": "^1.2.44",
+    "@types/sanitize-html": "^2.16.0",
     "@typescript-eslint/eslint-plugin": "^8.32.1",
     "@typescript-eslint/parser": "^8.32.1",
-    "astro": "^5.8.0",
+    "astro": "^5.9.3",
     "astro-compress": "^2.3.8",
     "astro-eslint-parser": "^1.2.2",
     "astro-icon": "^1.1.5",

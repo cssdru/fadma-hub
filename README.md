@@ -35,7 +35,7 @@ Pour lancer le projet en local :
 
 1.  **Cloner le dépôt (si ce n'est pas déjà fait) :**
     ```bash
-    git clone [https://github.com/cssdru/fadma-hub.git](https://github.com/YOUR_GITHUB_USERNAME/fadma-hub.git)
+    git clone [https://github.com/cssdru/fadma-hub.git](https://github.com/cssdru/fadma-hub.git)
     cd fadma-hub
     ```
 2.  **Installer les dépendances :**

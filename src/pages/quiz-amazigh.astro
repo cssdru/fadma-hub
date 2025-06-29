@@ -1,0 +1,23 @@
+---
+import DefaultLayout from '@layouts/DefaultLayout.astro'
+import PageHeader from '@components/PageHeader.astro'
+import AmazighQuiz from '@components/AmazighQuiz.astro' // Import your new Quiz component
+
+const pageTitle = "Quiz Culture Amazighe";
+const pageDescription = "Testez vos connaissances sur la riche culture Amazighe Rifaine avec notre quiz interactif.";
+const socialImage = "/social-preview-image.png"; // Your social sharing image relative to /public
+
+// Construct the full URL for SiteMeta
+const currentUrl = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<DefaultLayout>
+  <section class="narrow container my-16">
+    <div class="space-content"></div>
+
+    <main id="main-content" class="container my-12">
+        <AmazighQuiz />
+    </main>
+    </div>
+  </section>
+</DefaultLayout>

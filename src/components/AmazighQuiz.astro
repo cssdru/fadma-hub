@@ -1,0 +1,304 @@
+---
+import quizQuestions from '../data/quizQuestions.json';
+
+const initialQuizState = {
+    questions: quizQuestions,
+    currentQuestionIndex: 0,
+    score: 0,
+    quizCompleted: false,
+    selectedAnswer: null,
+    feedback: ''
+};
+---
+
+<div id="quiz-container" class="max-w-3xl mx-auto p-8 bg-white shadow-xl rounded-lg my-8">
+    <div class="mb-8">
+        <div class="flex justify-between items-center mb-3">
+            <h2 class="text-3xl font-bold text-gray-800">Quiz Culture Amazighe</h2>
+            <span id="question-counter" class="text-lg font-semibold text-gray-600">1 / {quizQuestions.length}</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-3">
+            <div id="progress-bar" class="bg-red-500 h-3 rounded-full transition-all duration-300 ease-out" style="width: 0%;"></div>
+        </div>
+    </div>
+
+    <div id="quiz-content">
+        </div>
+
+    <div id="did-you-know-box" class="hidden mt-6 p-4 rounded-lg border-l-4 border-blue-500 bg-blue-50 text-blue-800">
+        <p class="font-semibold mb-1">Savez-vous ? <span id="did-you-know-text" class="font-normal"></span></p>
+    </div>
+
+    <div class="mt-8">
+        <button id="action-button" class="button-quiz button has-icon py-3 text-xl">
+            Valider
+        </button>
+    </div>
+
+    <div id="quiz-results" class="hidden text-center mt-12">
+        <h3 class="text-3xl font-bold mb-4 text-gradient text-gray-800">Quiz terminé !</h3>
+        <p class="text-2xl text-gray-700">Votre score final : <span id="final-score" class="text-gradient font-bold"></span> / {quizQuestions.length}</p>
+        <p id="feedback-message" class="text-xl mt-4 mb-8 text-gray-800 font-semibold"></p>
+        <div class="mt-8">
+        <button id="restart-quiz-button" class="mt-8 button-quiz button color-secondary w-full py-3 text-xl bg-gray-500 hover:bg-gray-600 focus:ring-gray-400">
+            <svg height="1em" width="1em" data-icon="lucide:rotate-cw"><symbol id="ai:lucide:rotate-cw" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-9-9c2.49 0 4.8.96 6.56 2.54M21 2v6h-6"/></symbol><use href="#ai:lucide:rotate-cw"></use></svg>
+            Recommencer le Quiz
+        </button>
+        </div>
+    </div>
+</div>
+
+<style is:global>
+    /* Generic button style from your project */
+    #action-button {
+        width: 100%;
+        display: block;
+        box-sizing: border-box; /* Ensures padding/border are included within the 100% width */
+    }
+    .button-quiz {
+        background-color: #dc2626; /* bg-red-600 */
+        color: #ffffff; /* text-white */
+        font-weight: 600; /* font-semibold */
+        border-radius: 0.5rem; /* rounded-lg */
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1); /* shadow-md */
+        padding: 12px 24px; /* Custom padding from your original code */
+        outline: none; /* focus:outline-none */
+        /* Default transition */
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+        transition-duration: 150ms;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .button-quiz:hover {
+        background-color: #b91c1c; /* hover:bg-red-700 */
+    }
+
+    .button-quiz:focus {
+        box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.5); /* focus:ring-2 focus:ring-red-500 focus:ring-opacity-75 */
+    }
+
+    .button-quiz.color-secondary {
+        background-color: #6b7280; /* bg-gray-500 */
+    }
+
+    .button-quiz.color-secondary:hover {
+        background-color: #4b5563; /* hover:bg-gray-600 */
+    }
+
+    .button-quiz.color-secondary:focus {
+        box-shadow: 0 0 0 2px rgba(156, 163, 175, 0.5); /* focus:ring-gray-400 */
+    }
+
+    /* Option Card Styles */
+    .option-card {
+        display: block; /* block */
+        border-width: 1px; /* border */
+        border-style: solid; /* border (default style for border-width) */
+        border-color: #d1d5db; /* border-gray-300 */
+        border-radius: 0.5rem; /* rounded-lg */
+        padding: 1rem; /* p-4 */
+        cursor: pointer; /* cursor-pointer */
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; /* transition-colors */
+        transition-duration: 200ms; /* duration-200 */
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* ease-in-out (default for transition-colors) */
+    }
+
+    .option-card:hover {
+        background-color: #f9fafb; /* bg-gray-50 */
+    }
+
+    .option-card.selected {
+        border-color: #ef4444; /* border-red-500 */
+        background-color: #fef2f2; /* bg-red-50 */
+    }
+
+    .option-card.correct {
+        border-color: #22c55e; /* border-green-500 */
+        background-color: #f0fdf4; /* bg-green-50 */
+    }
+
+    .option-card.incorrect {
+        border-color: #ef4444; /* border-red-500 */
+        background-color: #fef2f2; /* bg-red-50 */
+    }
+
+    /* Hide default radio button - make sure this is effective */
+    .option-card input[type="radio"] {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+    }
+</style>
+
+<script define:vars={{ initialQuizState: initialQuizState }} type="module">
+    const quizQuestions = initialQuizState.questions;
+    let currentQuestionIndex = initialQuizState.currentQuestionIndex;
+    let score = initialQuizState.score;
+    let quizCompleted = initialQuizState.quizCompleted;
+    let selectedAnswer = initialQuizState.selectedAnswer;
+    let feedback = initialQuizState.feedback; // Still used internally, but feedback is now visual on cards
+
+    // DOM Elements
+    const quizContent = document.getElementById('quiz-content');
+    const quizResults = document.getElementById('quiz-results');
+    const finalScoreSpan = document.getElementById('final-score');
+    const restartButton = document.getElementById('restart-quiz-button');
+    const questionCounterSpan = document.getElementById('question-counter');
+    const progressBar = document.getElementById('progress-bar');
+    const actionButton = document.getElementById('action-button');
+    const didYouKnowBox = document.getElementById('did-you-know-box');
+    const didYouKnowText = document.getElementById('did-you-know-text');
+    const feedbackMessageElement = document.getElementById('feedback-message'); // NEW LINE
+
+
+    function updateProgressBar() {
+        const progress = (currentQuestionIndex / quizQuestions.length) * 100;
+        progressBar.style.width = `${progress}%`;
+        questionCounterSpan.textContent = `${currentQuestionIndex + 1} / ${quizQuestions.length}`;
+    }
+
+    function renderQuestion() {
+        if (currentQuestionIndex >= quizQuestions.length) {
+            showResults();
+            return;
+        }
+
+        const questionData = quizQuestions[currentQuestionIndex];
+        quizContent.innerHTML = `
+            <div class="mb-6">
+                <p class="text-xl font-bold mb-6 text-gray-900">${questionData.question}</p>
+                <div class="space-y-4">
+                    ${questionData.options.map((option, index) => `
+                        <label class="option-card text-gray-900" data-option="${option}">
+                            <input type="radio" name="answer" value="${option}" class="sr-only" ${selectedAnswer === option ? 'checked' : ''}>
+                            ${option}
+                        </label>
+                    `).join('')}
+                </div>
+            </div>
+        `;
+
+        // Reset state for new question
+        selectedAnswer = null;
+        didYouKnowBox.classList.add('hidden'); // Hide "Did you know?"
+        actionButton.textContent = 'Valider';
+        actionButton.onclick = checkAnswer;
+        actionButton.classList.remove('color-secondary'); // Ensure it's primary red
+        actionButton.disabled = true; // Disable until an option is selected
+
+        attachEventListeners();
+        updateProgressBar(); // Update progress bar and counter for new question
+    }
+
+    function attachEventListeners() {
+        const optionCards = document.querySelectorAll('.option-card');
+        optionCards.forEach(card => {
+            card.onclick = (e) => {
+                // Only allow selection if not already answered
+                if (actionButton.textContent === 'Valider') {
+                    // Remove 'selected' from all cards
+                    optionCards.forEach(c => c.classList.remove('selected'));
+                    // Add 'selected' to clicked card
+                    card.classList.add('selected');
+                    selectedAnswer = card.querySelector('input[name="answer"]').value;
+                    actionButton.disabled = false; // Enable submit button
+                }
+            };
+        });
+    }
+
+    function checkAnswer() {
+        if (!selectedAnswer) {
+            // Should not happen if button is disabled correctly
+            return;
+        }
+
+        const questionData = quizQuestions[currentQuestionIndex];
+        const correctAnswer = questionData.answer;
+        const optionCards = document.querySelectorAll('.option-card');
+
+        // Apply correct/incorrect styling
+        optionCards.forEach(card => {
+            const radio = card.querySelector('input[name="answer"]');
+            radio.disabled = true; // Disable all radios after checking
+
+            if (radio.value === correctAnswer) {
+                card.classList.add('correct');
+                card.classList.remove('selected'); // Remove selected if it was the correct one
+            } else if (radio.value === selectedAnswer) {
+                card.classList.add('incorrect');
+                card.classList.remove('selected'); // Remove selected if it was the incorrect one
+            }
+        });
+
+        // Update score
+        if (selectedAnswer === correctAnswer) {
+            score++;
+        }
+
+        // Show "Did you know?"
+        if (questionData.didYouKnow) {
+            didYouKnowText.textContent = questionData.didYouKnow;
+            didYouKnowBox.classList.remove('hidden');
+        }
+
+        // Change button to Next/Finish
+        if (currentQuestionIndex < quizQuestions.length - 1) {
+            actionButton.textContent = 'Question Suivante';
+            actionButton.onclick = () => {
+                currentQuestionIndex++;
+                renderQuestion();
+            };
+            actionButton.classList.add('color-secondary'); // Make it secondary color
+        } else {
+            actionButton.textContent = 'Terminer le Quiz';
+            actionButton.onclick = showResults;
+            actionButton.classList.add('color-secondary'); // Make it secondary color
+        }
+        actionButton.disabled = false; // Always enable next/finish
+    }
+
+    function showResults() {
+        quizContent.classList.add('hidden');
+        quizResults.classList.remove('hidden');
+        finalScoreSpan.textContent = score;
+        // Calculate percentage and determine feedback message
+        const totalQuestions = quizQuestions.length;
+        const percentage = (score / totalQuestions) * 100;
+
+        let feedbackText = "";
+        if (percentage >= 80) feedbackText = "Excellent ! Vous connaissez bien la culture rifaine ! 🎉";
+        else if (percentage >= 60) feedbackText = "Bon travail ! Vous avez de solides connaissances sur la culture rifaine. 👏";
+        else if (percentage >= 40) feedbackText = "Pas mal ! Continuez à apprendre sur la culture rifaine. 📚";
+        else feedbackText = "Continuez à explorer ! Il y a tant à découvrir sur la culture rifaine. 💡"; // Added an emoji here
+
+        feedbackMessageElement.textContent = feedbackText; // Display the feedback message
+        progressBar.style.width = `100%`; // Ensure progress bar is full
+        questionCounterSpan.textContent = `${quizQuestions.length} / ${quizQuestions.length}`; // Update counter to final
+    }
+
+    function restartQuiz() {
+        currentQuestionIndex = 0;
+        score = 0;
+        quizCompleted = false;
+        selectedAnswer = null;
+        feedback = ''; // Reset feedback
+        didYouKnowBox.classList.add('hidden'); // Hide "Did you know?"
+        actionButton.disabled = false; // Enable button for first question
+
+        quizResults.classList.add('hidden');
+        quizContent.classList.remove('hidden');
+        renderQuestion();
+    }
+
+    restartButton.onclick = restartQuiz;
+
+    // Initial render
+    renderQuestion();
+</script>

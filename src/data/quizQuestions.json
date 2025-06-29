@@ -1,0 +1,57 @@
+[
+  {
+    "question": "Quelle est la boisson la plus emblématique de la culture Amazighe ?",
+    "options": [
+      "Café",
+      "Thé à la menthe",
+      "Jus d'orange",
+      "Eau"
+    ],
+    "answer": "Thé à la menthe",
+    "didYouKnow": "Le thé à la menthe est un symbole d'hospitalité et de convivialité dans la culture Amazighe."
+  },
+  {
+    "question": "Quel est le nom de la fête du nouvel an Amazigh ?",
+    "options": [
+      "Aid Al-Adha",
+      "Yennayer",
+      "Achoura",
+      "Noël"
+    ],
+    "answer": "Yennayer",
+    "didYouKnow": "Yennayer marque le début du calendrier agraire Amazigh, une célébration ancestrale de la nature et de l'espoir."
+  },
+  {
+    "question": "Quel motif est souvent présent dans l'art et l'artisanat Amazigh du Rif ?",
+    "options": [
+      "Animaux de la jungle",
+      "Formes géométriques",
+      "Scènes de ville",
+      "Voitures"
+    ],
+    "answer": "Formes géométriques",
+    "didYouKnow": "Les motifs géométriques, souvent inspirés de la nature, sont au cœur de l'esthétique Amazighe, symbolisant la vie et la protection."
+  },
+  {
+    "question": "Quel instrument de musique traditionnel Amazigh est un tambourin en peau de chèvre ?",
+    "options": [
+      "Piano",
+      "Guembri",
+      "Guitar",
+      "Violon"
+    ],
+    "answer": "Guembri",
+    "didYouKnow": "Bien que le Guembri soit plus connu en tant qu'instrument Gnaoua, les instruments à percussion comme le Bendir et le Tameja sont omniprésents dans la musique Amazighe du Rif."
+  },
+  {
+    "question": "Comment appelle-t-on le vêtement traditionnel porté par les femmes Amazighes du Rif ?",
+    "options": [
+      "Taqendurt",
+      "Jean",
+      "T-shirt",
+      "Robe"
+    ],
+    "answer": "Taqendurt",
+    "didYouKnow": "La Taqendurt (ou Qendura) est une robe traditionnelle élégante, souvent richement brodée, portée lors d'occasions spéciales."
+  }
+]

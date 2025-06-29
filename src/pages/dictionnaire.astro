@@ -1,0 +1,61 @@
+---
+import DefaultLayout from '@layouts/DefaultLayout.astro'
+
+const pageTitle = "Quiz Culture Amazighe";
+const pageDescription = "Testez vos connaissances sur la riche culture Amazighe Rifaine avec notre quiz interactif.";
+const socialImage = "/social-preview-image.png"; // Your social sharing image relative to /public
+
+// Construct the full URL for SiteMeta
+const currentUrl = new URL(Astro.url.pathname, Astro.site).href;
+
+// Define your Riffian Amazigh words and their French definitions
+const dictionaryWords = [
+  {
+    word: "ⴰⵎⴰⵣⵉⵖ (Amazigh)",
+    definition: "Terme utilisé par les Amazighs eux-mêmes pour se désigner, signifiant 'homme libre' ou 'homme noble'."
+  },
+  {
+    word: "ⵜⴰⵎⴰⵣⵉⵖⵜ (Tamazight)",
+    definition: "Nom de la langue amazighe et de l'identité amazighe."
+  },
+  {
+    word: "ⴰⵣⵔⵓ (Azru)",
+    definition: "Pierre."
+  },
+  {
+    word: "ⴰⴼⵓⵙ (Afus)",
+    definition: "Main."
+  },
+  {
+    word: "ⴰⵎⴰⵏ (Aman)",
+    definition: "Eau."
+  },
+  {
+    word: "ⵜⴰⵡⴰⴷⴰ (Tawada)",
+    definition: "Chemin, route."
+  },
+  {
+    word: "ⴰⵎⵓⴷ (Amud)",
+    definition: "Graine."
+  }
+];
+---
+
+<DefaultLayout>
+  <section class="narrow container my-16 space-y-6">
+    <div class="space-content"></div>
+
+    <main id="main-content" class="container my-12">
+        {dictionaryWords.map(entry => (
+        <div class="border-b pb-4 last:border-b-0">
+          <h2 class="text-2xl font-semibold text-red-700 mb-2">{entry.word}</h2>
+          <p class="text-gray-700 text-lg">{entry.definition}</p>
+        </div>
+      ))}
+
+<p class="mt-10 text-center text-gray-600">Plus de mots à venir bientôt !</p>
+
+    </main>
+    </div>
+  </section>
+</DefaultLayout>

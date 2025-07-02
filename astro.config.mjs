@@ -11,6 +11,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   compressHTML: true,
   site: 'https://www.fadma.be',
+  trailingSlash: "always",
   integrations: [mdx(), icon(), compress(), sitemap()],
   vite: {
     css: {
